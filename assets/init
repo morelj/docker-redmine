@@ -52,6 +52,19 @@ SSL_DHPARAM_PATH=${SSL_DHPARAM_PATH:-${SSL_CERTIFICATES_DIR}/dhparam.pem}
 UNICORN_WORKERS=${UNICORN_WORKERS:-2}
 UNICORN_TIMEOUT=${UNICORN_TIMEOUT:-60}
 
+# is a SMTP container linked?
+# requires that the SMTP container has exposed port 25, 587 or 465
+if [ -n "${SMTP_PORT_25_TCP_ADDR}" ]; then
+  SMTP_HOST=${SMTP_PORT_25_TCP_ADDR}
+  SMTP_PORT=${SMTP_PORT_25_TCP_PORT}
+elif [ -n "${SMTP_PORT_587_TCP_ADDR}" ]; then
+  SMTP_HOST=${SMTP_PORT_587_TCP_ADDR}
+  SMTP_PORT=${SMTP_PORT_587_TCP_PORT}
+elif [ -n "${SMTP_PORT_465_TCP_ADDR}" ]; then
+  SMTP_HOST=${SMTP_PORT_465_TCP_ADDR}
+  SMTP_PORT=${SMTP_PORT_465_TCP_PORT}
+fi
+
 # is a mysql or postgresql database linked?
 # requires that the mysql or postgresql containers have exposed
 # port 3306 and 5432 respectively.
